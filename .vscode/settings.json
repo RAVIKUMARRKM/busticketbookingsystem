@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/ec2c443c-9aa4-4805-aac9-911501b3a923/resourceGroups/RG1/providers/Microsoft.Web/sites/traveltickingsystem",
+    "appService.deploySubpath": "dist\\bus-booking-system"
+}
