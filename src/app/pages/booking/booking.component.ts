@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MasterService } from '../../service/master.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css'
 })
@@ -15,7 +16,7 @@ export class BookingComponent {
   scheduleData: any;
   seatArray: number[] = [];
   bookedSeatsArray: number[] = [];
-  userSelectedSeatArray: number[] = [];
+  userSelectedSeatArray: any[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private masterService: MasterService) {
     this.activatedRoute.params.subscribe((res: any) => {
@@ -45,11 +46,41 @@ export class BookingComponent {
   }
 
   selectSeat(seatNo: number) {
-    this.userSelectedSeatArray.push(seatNo);
+    const obj = {
+      "passengerId": 0,
+      "bookingId": 0,
+      "passengerName": "",
+      "age": 0,
+      "gender": "",
+      "seatNo": 0
+    }
+    obj.seatNo = seatNo;
+    this.userSelectedSeatArray.push(obj);
   }
 
   checkIsSeatSelected(seatNo: number) {
-    return this.userSelectedSeatArray.indexOf(seatNo);
+    return this.userSelectedSeatArray.findIndex(m => m.seatNo == seatNo);
+  }
+
+  bookNow() {
+    const loggedUserData = localStorage.getItem('busUser');
+    if(loggedUserData != null) {
+      const loggData = JSON.parse(loggedUserData);
+      const obj = {
+        "bookingId": 0,
+        "custId": loggData.userId,
+        "bookingDate": new Date(),
+        "scheduleId": this.scheduleId,
+        "BusBookingPassengers": this.userSelectedSeatArray
+      }
+      this.masterService.onBusBooking(obj).subscribe((res: any) => {
+        alert("Booking Success");
+      }, error => {
+        
+      })
+    } else {
+      alert("Please Login")
+    }
   }
 
 }

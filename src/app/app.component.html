@@ -1,8 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-5">
     <div class="container-fluid">
         <!-- Logo -->
-        <a class="navbar-brand m-0" href="#"> 
-            <img src="https://s3.rdbuz.com/Images/rdc/rdc-redbus-logo.svg" alt="Logo" width="100" height="50" class="d-inline-block align-text-top">
+        <a class="navbar-brand m-0" href="#">
+            <img src="https://s3.rdbuz.com/Images/rdc/rdc-redbus-logo.svg" alt="Logo" width="100" height="50"
+                class="d-inline-block align-text-top">
         </a>
         <div class="d-flex flex-column justify-content-center">
             <span>Trusted By</span>
@@ -12,9 +13,9 @@
         <!-- Toggle button for mobile view -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span> 
-        </button> 
-        
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
         <!-- Links -->
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
@@ -22,9 +23,90 @@
                 <li class="nav-item"> <a class="nav-link" href="#">Buses</a> </li>
                 <li class="nav-item"> <a class="nav-link" href="#">Offers</a> </li>
                 <li class="nav-item"> <a class="nav-link" href="#">Need Help?</a> </li>
-                <li class="nav-item"> <a class="nav-link" href="#">Login / SignUp</a> </li>
+                @if (loggedUserData) {
+                    <li class="nav-item"> <a class="nav-link text-success fw-bold cursor-pointer">{{loggedUserData.userName}}</a> </li>
+                    <li class="nav-item text-danger"> <a class="nav-link text-danger fw-bold cursor-pointer" (click)="onLogout()">Logout</a> </li>
+                } @else {
+                    <li class="nav-item"> <a class="nav-link text-primary cursor-pointer" (click)="openModal()">Login / SignUp</a> </li>
+                }
             </ul>
         </div>
     </div>
 </nav>
 <router-outlet />
+<div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+        @if (isLoginForm) {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sign in to avail exciting discounts!!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Email input -->
+                        <div data-mdb-input-init class="form-floating  mb-4">
+                            <input type="email" id="form2Example1" class="form-control" />
+                            <label class="form-label" for="form2Example1">Email address</label>
+                        </div>
+                
+                        <!-- Password input -->
+                        <div data-mdb-input-init class="form-floating  mb-4">
+                            <input type="password" id="form2Example2" class="form-control" />
+                            <label class="form-label" for="form2Example2">Password</label>
+                        </div>
+                         <!-- Submit button -->
+                        <div class="text-center">
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer d-flex align-self-center">
+                    <!-- Register buttons -->
+                    <p>Not a member? <a class="text-blue text-decoration-none cursor-pointer" (click)="isLoginForm = false">Register</a></p>
+                </div>
+            </div>
+        } @else {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Unlock the Smarter Way to Travel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Email input -->
+                        <div data-mdb-input-init class="form-floating  mb-4">
+                            <input type="email" id="form2Example1" class="form-control" name="emailId" [(ngModel)]="registerObj.emailId" />
+                            <label class="form-label" for="form2Example1">Email address</label>
+                        </div>
+
+                        <!-- Username input -->
+                        <div data-mdb-input-init class="form-floating  mb-4">
+                            <input type="userName" id="form2Example1" class="form-control" name="userName" [(ngModel)]="registerObj.userName" />
+                            <label class="form-label" for="form2Example1">User Name</label>
+                        </div>
+
+                        <!-- Fullname input -->
+                        <div data-mdb-input-init class="form-floating  mb-4">
+                            <input type="fullName" id="form2Example1" class="form-control" name="fullName" [(ngModel)]="registerObj.fullName" />
+                            <label class="form-label" for="form2Example1">Full Name</label>
+                        </div>
+                
+                        <!-- Password input -->
+                        <div data-mdb-input-init class="form-floating  mb-4">
+                            <input type="password" id="form2Example2" class="form-control" name="password" [(ngModel)]="registerObj.password" />
+                            <label class="form-label" for="form2Example2">Password</label>
+                        </div>
+                        <!-- Register buttons -->
+                        <div class="text-center">
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4" (click)="onRegister()">Register</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer d-flex align-self-center">
+                    <p>Already a member? <a class="text-blue text-decoration-none cursor-pointer" (click)="isLoginForm = true">Login</a></p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
