@@ -27,4 +27,12 @@ export class MasterService {
     return this.http.get(this.apiURL + 'getBookedSeats?id=' + id);
   }
 
+  onRegisterUser(obj: any) {
+    return this.http.post<any[]>(this.apiURL + "AddNewUser", obj);
+  }
+
+  onBusBooking(obj: any) {
+    return this.http.post<any[]>(this.apiURL + 'PostBusBooking', obj)
+  }
+
 }
